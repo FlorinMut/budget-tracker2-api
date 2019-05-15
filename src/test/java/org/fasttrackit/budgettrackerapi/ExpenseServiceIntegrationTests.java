@@ -95,7 +95,7 @@ public class ExpenseServiceIntegrationTests {
     //test pt DELETE
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testDeleteExpense_whenExistingId_thenExpenseisDeleted() throws ResourceNotFoundException {
+    public void testDeleteExpense_whenExistingId_thenExpenseIsDeleted() throws ResourceNotFoundException {
 
         //prima data creez o cheltuiala noua, ca sa stiu ca am unul ca sa pot sa sterg
         Expense addExpense = addExpense();

@@ -1,7 +1,6 @@
 package org.fasttrackit.budgettrackerapi.persistence;
 
 import org.fasttrackit.budgettrackerapi.domain.Expense;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
