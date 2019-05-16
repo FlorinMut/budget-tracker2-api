@@ -1,8 +1,11 @@
 package org.fasttrackit.budgettrackerapi;
 
+import org.fasttrackit.budgettrackerapi.domain.Income;
 import org.fasttrackit.budgettrackerapi.domain.User;
 import org.fasttrackit.budgettrackerapi.exception.ResourceNotFoundException;
+import org.fasttrackit.budgettrackerapi.service.IncomeService;
 import org.fasttrackit.budgettrackerapi.service.UserService;
+import org.fasttrackit.budgettrackerapi.transfer.AddIncome;
 import org.fasttrackit.budgettrackerapi.transfer.AddUser;
 import org.fasttrackit.budgettrackerapi.transfer.ShowUserRequest;
 import org.fasttrackit.budgettrackerapi.transfer.UpdateUser;
@@ -25,22 +28,30 @@ public class UserServiceIntegrationTests {
     private UserService userService;
 
 
-    // test pt metoda CREATE - ca sa vedem ca putem adauga un User nou
-    @Test
-    public void  testCreatedUser_whenValidRequest_thenReturnUserWithId(){
+    // pt metoda M:1
+    @Autowired
+    private UserSteps userSteps;
 
-        User user = addUser();
 
-        //asigura-te ca valoarea nu e nula
-        assertThat(user, notNullValue());
-        assertThat(user.getId(), greaterThan(0L));
-    }
-    private User addUser() {
-        AddUser incurredUser = new AddUser();
-        incurredUser.setName("Florin");
-
-        return userService.addUser(incurredUser);
-    }
+    // test pt metoda CREATE - ca sa vedem ca putem adauga un User nou. Acum pt metoda M:1
+//    @Test
+//    public void testCreateUser_whenValidRequest_thenReturnUserWithId() {
+//
+//        User user = userSteps.addUser();
+//
+//        AddIncome incomeRequest = new AddIncome();
+//        incomeRequest.setUserId(user.getId());
+//        incomeRequest.setSource("Salary");
+//        incomeRequest.setAmount(5000);
+//
+//       Income income = new Income();
+//       income.setUser(user);
+//
+//
+//        //asigura-te ca valoarea nu e nula
+//        assertThat(user, notNullValue());
+//        assertThat(user.getId(), greaterThan(0L));
+//    }
 
 
     // test pt metoda de GET, vedem daca ne da un User dupa un anumit ID
@@ -53,7 +64,7 @@ public class UserServiceIntegrationTests {
     // 2. facem si testul negativ
     @Test //test inseamna ca ii putem da si Run separat, nu e doar o simpla metoda
     public void testShowUser_whenExistingId_thenReturnRequestedUser() throws ResourceNotFoundException {
-        User user = addUser();
+        User user = userSteps.addUser();
 
         User retrievedUser = userService.showUser(user.getId());
 
@@ -66,7 +77,7 @@ public class UserServiceIntegrationTests {
     @Test
     public void testUpdateUser_whenValidRequestWithAllFields_thenShowUpdatedUser() throws ResourceNotFoundException {
         // testele sunt independente, deci trebuie sa incepem cu creare de produs pt ca nu putem updata daca nu avem macar unul
-        User createdUser = addUser();
+        User createdUser = userSteps.addUser();
 
         UpdateUser incurred = new UpdateUser();
         incurred.setName(createdUser.getName() + " Edited");
@@ -88,7 +99,7 @@ public class UserServiceIntegrationTests {
     public void testDeleteUser_whenExistingId_thenUserisDeleted() throws ResourceNotFoundException {
 
         //prima data creez o cheltuiala noua, ca sa stiu ca am unul ca sa pot sa sterg
-        User addUser = addUser();
+        User addUser = userSteps.addUser();
 
         //apoi il sterg
         userService.deleteUser(addUser.getId());
@@ -100,7 +111,7 @@ public class UserServiceIntegrationTests {
     @Test
     public void testShowUser_whenAllCriteriaProvidedAndMatching_thenReturnFilteredResults() {
 
-        User addUser = addUser();
+        User addUser = userSteps.addUser();
 
         ShowUserRequest request = new ShowUserRequest();
         request.setPartialName("Flo");

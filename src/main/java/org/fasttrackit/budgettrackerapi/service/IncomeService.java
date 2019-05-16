@@ -2,9 +2,11 @@ package org.fasttrackit.budgettrackerapi.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fasttrackit.budgettrackerapi.domain.Income;
+import org.fasttrackit.budgettrackerapi.domain.User;
 import org.fasttrackit.budgettrackerapi.exception.ResourceNotFoundException;
 import org.fasttrackit.budgettrackerapi.persistence.IncomeRepository;
 import org.fasttrackit.budgettrackerapi.transfer.AddIncome;
+import org.fasttrackit.budgettrackerapi.transfer.AddUser;
 import org.fasttrackit.budgettrackerapi.transfer.ShowIncomeRequest;
 import org.fasttrackit.budgettrackerapi.transfer.UpdateIncome;
 import org.slf4j.Logger;
@@ -15,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class IncomeService {
 
@@ -22,25 +26,40 @@ public class IncomeService {
             LoggerFactory.getLogger(IncomeService.class);
 
     private final IncomeRepository incomeRepository;
+    private final UserService userService;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public IncomeService(IncomeRepository incomeRepository, ObjectMapper objectMapper) {
+    public IncomeService(IncomeRepository incomeRepository, UserService userService, ObjectMapper objectMapper) {
         this.incomeRepository = incomeRepository;
+        this.userService = userService;
         this.objectMapper = objectMapper;
     }
 
-    // Incepem sa facem metodele de CRUD
+    // Pt relatia M:1, cream o metoda care sa ne adauge un Income
+    @Transactional
+    public Income addIncome(AddIncome incurring) throws ResourceNotFoundException {
+        User user = userService.showUser(incurring.getUserId());
 
+        Income income = new Income();
+        income.setAmount(incurring.getAmount());
+        income.setSource(incurring.getSource());
+        income.setUser(user);
 
-    // 1. Create - adica adaugam o cheltuiala in BD
-    public Income addIncome(AddIncome incurring) {
-        LOGGER.info("Adding income {}", incurring);
-        Income income = objectMapper.convertValue(incurring, Income.class);
         return incomeRepository.save(income);
     }
 
-    // 2. Read - adica ne afisam una dintre cheltuielile din BD in fct de un criteriu dorit si daca nu gaseste, sa arunce o exceptie
+
+    // Incepem sa facem metodele de CRUD
+
+     //1. Create - adica adaugam un Income in BD
+//    public Income addIncome(AddIncome incurring) {
+//        LOGGER.info("Adding income {}", incurring);
+//        Income income = objectMapper.convertValue(incurring, Income.class);
+//        return incomeRepository.save(income);
+//    }
+
+    // 2. Read - adica ne afisam una dintre veniturile din BD in fct de un criteriu dorit si daca nu gaseste, sa arunce o exceptie
     public Income showIncome(long id) throws ResourceNotFoundException {
         LOGGER.info("Showing income {}", id);
         return incomeRepository.findById(id)
@@ -49,7 +68,16 @@ public class IncomeService {
 
     }
 
-    // o metoda care ne aduce m multe ch dupa m multe criterii
+//   public Page<Income> getIncomes(AddUser request, Pageable pageable) {
+//        LOGGER.info("Retrieving incomes >> ", request);
+//
+//        if (request.getUserId != null) {
+//
+//        return incomeRepository.findAll(pageable); }
+
+
+
+    // o metoda care ne aduce m multe venituri dupa m multe criterii
 
     public Page<Income> getIncomes(ShowIncomeRequest request, Pageable pageable) {
         LOGGER.info("Retrieving incomes >> ", request);

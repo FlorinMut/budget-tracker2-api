@@ -7,6 +7,7 @@ public class AddIncome {
     @NotBlank
     private String source;
     private double amount;
+    private long userId;
 
     public String getSource() {
         return source;
@@ -24,11 +25,20 @@ public class AddIncome {
         this.amount = amount;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "AddIncome{" +
                 "source='" + source + '\'' +
                 ", amount=" + amount +
+                ", userId=" + userId +
                 '}';
     }
 }

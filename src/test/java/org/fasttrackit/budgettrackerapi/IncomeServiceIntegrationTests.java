@@ -1,8 +1,10 @@
 package org.fasttrackit.budgettrackerapi;
 
 import org.fasttrackit.budgettrackerapi.domain.Income;
+import org.fasttrackit.budgettrackerapi.domain.User;
 import org.fasttrackit.budgettrackerapi.exception.ResourceNotFoundException;
 import org.fasttrackit.budgettrackerapi.service.IncomeService;
+import org.fasttrackit.budgettrackerapi.service.UserService;
 import org.fasttrackit.budgettrackerapi.transfer.AddIncome;
 import org.fasttrackit.budgettrackerapi.transfer.ShowIncomeRequest;
 import org.fasttrackit.budgettrackerapi.transfer.UpdateIncome;
@@ -24,10 +26,46 @@ public class IncomeServiceIntegrationTests {
     @Autowired
     private IncomeService incomeService;
 
+    @Autowired
+    private UserSteps userSteps;
+
+    @Test
+    public void testCreateUser_whenValidRequest_thenReturnUserWithId() throws ResourceNotFoundException {
+
+        User user = userSteps.addUser();
+
+        AddIncome incomeRequest = new AddIncome();
+        incomeRequest.setUserId(user.getId());
+        incomeRequest.setSource("Salary");
+        incomeRequest.setAmount(5000);
+
+
+        Income income = incomeService.addIncome(incomeRequest);
+
+        //asigura-te ca valoarea nu e nula
+        assertThat(income, notNullValue());
+        assertThat(income.getId(), greaterThan(0L));
+
+        assertThat(income.getUser(), notNullValue());
+        assertThat(income.getSource(), is(incomeRequest.getSource()));
+        assertThat(income.getAmount(), is(incomeRequest.getAmount()));
+        assertThat(income.getUser().getId(), is(user.getId()));
+    }
+
+
+    // pt metoda M:1
+   // @Autowired
+   // private UserSteps userSteps;
+     //facem testul pt metoda M:1 cu User, cum fac daca nu am ProductSteps ca si clasa??
+//    @Test
+//   public void testCreateIncome_whenValidRequest_thenReturnReview() {
+//       User user = userSteps.addUser();  }
+
+
 
     // test pt metoda CREATE - ca sa vedem ca putem adauga o sursa de venit noua
     @Test
-    public void  testCreatedIncome_whenValidRequest_thenReturnIncomeWithId(){
+    public void  testCreatedIncome_whenValidRequest_thenReturnIncomeWithId() throws ResourceNotFoundException {
 
         Income income = addIncome();
 
@@ -35,7 +73,7 @@ public class IncomeServiceIntegrationTests {
         assertThat(income, notNullValue());
         assertThat(income.getId(), greaterThan(0L));
     }
-    private Income addIncome() {
+    private Income addIncome() throws ResourceNotFoundException {
         AddIncome incurredIncome = new AddIncome();
         incurredIncome.setSource("Salary");
         incurredIncome.setAmount(4000);
@@ -105,7 +143,7 @@ public class IncomeServiceIntegrationTests {
     }
 
     @Test
-    public void testShowIncome_whenAllCriteriaProvidedAndMatching_thenReturnFilteredResults() {
+    public void testShowIncome_whenAllCriteriaProvidedAndMatching_thenReturnFilteredResults() throws ResourceNotFoundException {
 
         Income addIncome = addIncome();
 

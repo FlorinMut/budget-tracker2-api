@@ -18,6 +18,11 @@ public class Income {
     private String source;
     private double amount;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
     public long getId() {
         return id;
     }
@@ -40,5 +45,13 @@ public class Income {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
