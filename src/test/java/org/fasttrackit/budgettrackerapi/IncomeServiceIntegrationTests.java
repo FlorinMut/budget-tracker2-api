@@ -53,16 +53,6 @@ public class IncomeServiceIntegrationTests {
     }
 
 
-    // pt metoda M:1
-   // @Autowired
-   // private UserSteps userSteps;
-     //facem testul pt metoda M:1 cu User, cum fac daca nu am ProductSteps ca si clasa??
-//    @Test
-//   public void testCreateIncome_whenValidRequest_thenReturnReview() {
-//       User user = userSteps.addUser();  }
-
-
-
     // test pt metoda CREATE - ca sa vedem ca putem adauga o sursa de venit noua
     @Test
     public void  testCreatedIncome_whenValidRequest_thenReturnIncomeWithId() throws ResourceNotFoundException {

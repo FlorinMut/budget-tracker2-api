@@ -19,11 +19,11 @@ public class User {
     private String name;
 
     //1:M relation - one User can have 1 or more incomes
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Income> incomes = new ArrayList<>();
+//    @OneToMany(
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private List<Income> incomes = new ArrayList<>();
 
     public long getId() {
         return id;

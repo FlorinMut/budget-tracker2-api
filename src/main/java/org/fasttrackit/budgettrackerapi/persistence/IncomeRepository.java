@@ -11,7 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface IncomeRepository extends JpaRepository<Income, Long> { //ar fi trebuit JPA Repository sau PagingandSorting?
 
     //face findBy-ul pt relatia M:1 cu Userul
-    Page<Income> findByUserId(long userId, Pageable pageable); //trebuie sa o facem si in service
+   // Page<Income> findByUserId(long userId, Pageable pageable); //trebuie sa o facem si in service
 
 
     Page<Income> findBySourceContainingAndAmountBetween(

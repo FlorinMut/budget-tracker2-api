@@ -7,7 +7,7 @@ import org.fasttrackit.budgettrackerapi.transfer.AddExpense;
 import org.fasttrackit.budgettrackerapi.transfer.ShowExpenseRequest;
 import org.fasttrackit.budgettrackerapi.transfer.UpdateExpense;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
