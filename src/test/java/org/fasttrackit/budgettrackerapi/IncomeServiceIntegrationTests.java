@@ -4,7 +4,6 @@ import org.fasttrackit.budgettrackerapi.domain.Income;
 import org.fasttrackit.budgettrackerapi.domain.User;
 import org.fasttrackit.budgettrackerapi.exception.ResourceNotFoundException;
 import org.fasttrackit.budgettrackerapi.service.IncomeService;
-import org.fasttrackit.budgettrackerapi.service.UserService;
 import org.fasttrackit.budgettrackerapi.transfer.AddIncome;
 import org.fasttrackit.budgettrackerapi.transfer.ShowIncomeRequest;
 import org.fasttrackit.budgettrackerapi.transfer.UpdateIncome;
